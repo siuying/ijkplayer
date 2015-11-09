@@ -55,6 +55,7 @@ if [ -z "$FF_ARCH" ]; then
     exit 1
 fi
 
+TVOS=$2
 
 FF_BUILD_ROOT=`pwd`
 FF_TAGET_OS="darwin"
@@ -89,13 +90,21 @@ FF_XCODE_BITCODE=
 
 if [ "$FF_ARCH" = "i386" ]; then
     FF_BUILD_NAME="openssl-i386"
-    FF_XCRUN_PLATFORM="iPhoneSimulator"
-    FF_XCRUN_OSVERSION="-mios-simulator-version-min=6.0"
+    if [ "$TVOS" = "yes"]; then
+      FF_XCRUN_PLATFORM="AppleTVSimulator"
+    else
+      FF_XCRUN_PLATFORM="iPhoneSimulator"
+      FF_XCRUN_OSVERSION="-mios-simulator-version-min=6.0"
+    fi
     OPENSSL_CFG_FLAGS="darwin-i386-cc $OPENSSL_CFG_FLAGS"
 elif [ "$FF_ARCH" = "x86_64" ]; then
     FF_BUILD_NAME="openssl-x86_64"
-    FF_XCRUN_PLATFORM="iPhoneSimulator"
-    FF_XCRUN_OSVERSION="-mios-simulator-version-min=7.0"
+    if [ "$TVOS" = "yes"]; then
+      FF_XCRUN_PLATFORM="AppleTVSimulator"
+    else
+      FF_XCRUN_PLATFORM="iPhoneSimulator"
+      FF_XCRUN_OSVERSION="-mios-simulator-version-min=7.0"
+    fi
     OPENSSL_CFG_FLAGS="darwin64-x86_64-cc $OPENSSL_CFG_FLAGS"
 elif [ "$FF_ARCH" = "armv7" ]; then
     FF_BUILD_NAME="openssl-armv7"
@@ -106,12 +115,22 @@ elif [ "$FF_ARCH" = "armv7" ]; then
 elif [ "$FF_ARCH" = "armv7s" ]; then
     FF_BUILD_NAME="openssl-armv7s"
     OPENSSL_CFG_CPU="--cpu=swift"
-    FF_XCRUN_OSVERSION="-miphoneos-version-min=6.0"
+    if [ "$TVOS" = "yes"]; then
+      FF_XCRUN_PLATFORM="AppleTVOS"
+    else
+      FF_XCRUN_PLATFORM="iPhoneOS"
+      FF_XCRUN_OSVERSION="-miphoneos-version-min=6.0"
+    fi
     FF_XCODE_BITCODE="-fembed-bitcode"
     OPENSSL_CFG_FLAGS="$OPENSSL_CFG_FLAGS_ARM $OPENSSL_CFG_FLAGS"
 elif [ "$FF_ARCH" = "arm64" ]; then
     FF_BUILD_NAME="openssl-arm64"
-    FF_XCRUN_OSVERSION="-miphoneos-version-min=7.0"
+    if [ "$TVOS" = "yes"]; then
+      FF_XCRUN_PLATFORM="AppleTVOS"
+    else
+      FF_XCRUN_PLATFORM="iPhoneOS"
+      FF_XCRUN_OSVERSION="-miphoneos-version-min=7.0"
+    fi
     FF_XCODE_BITCODE="-fembed-bitcode"
     OPENSSL_CFG_FLAGS="$OPENSSL_CFG_FLAGS_ARM $OPENSSL_CFG_FLAGS"
     FF_GASPP_EXPORT="GASPP_FIX_XCODE5=1"

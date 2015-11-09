@@ -23,7 +23,8 @@ FF_ALL_ARCHS_IOS7_SDK="armv7 armv7s arm64 i386 x86_64"
 FF_ALL_ARCHS_IOS8_SDK="armv7 arm64 i386 x86_64"
 FF_ALL_ARCHS_TVOS9_SDK="arm64 i386 x86_64"
 
-FF_ALL_ARCHS=$FF_ALL_ARCHS_TVOS9_SDK
+FF_ALL_ARCHS=$FF_ALL_ARCHS_IOS8_SDK
+TVOS="no"
 
 #----------
 UNI_BUILD_ROOT=`pwd`
@@ -135,6 +136,17 @@ elif [ "$FF_TARGET" = "all" ]; then
     done
 
     do_lipo_all
+elif [ "$FF_TARGET" = "all-tv" ]; then
+    FF_ALL_ARCHS=$FF_ALL_ARCHS_TVOS9_SDK
+    TVOS="yes"
+
+    echo_archs
+    for ARCH in $FF_ALL_ARCHS
+    do
+        sh tools/do-compile-ffmpeg.sh $ARCH $TVOS
+    done
+
+    do_lipo_all
 elif [ "$FF_TARGET" = "check" ]; then
     echo_archs
 elif [ "$FF_TARGET" = "clean" ]; then
@@ -153,6 +165,7 @@ else
     echo "  compile-ffmpeg.sh armv7s (obselete)"
     echo "  compile-ffmpeg.sh lipo"
     echo "  compile-ffmpeg.sh all"
+    echo "  compile-ffmpeg.sh all-tv"
     echo "  compile-ffmpeg.sh clean"
     echo "  compile-ffmpeg.sh check"
     exit 1
