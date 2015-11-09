@@ -186,8 +186,8 @@ void IJKFFIOStatCompleteRegister(void (*cb)(const char *url,
         // IJKFFIOStatCompleteRegister(IJKFFIOStatCompleteDebugCallback);
 
         // init fields
-        _controlStyle = MPMovieControlStyleNone;
-        _scalingMode = MPMovieScalingModeAspectFit;
+        _controlStyle = IJKMovieControlStyleNone;
+        _scalingMode = IJKMovieScalingModeAspectFit;
         _shouldAutoplay = YES;
 
         // init media resource
@@ -381,6 +381,8 @@ inline static int getPlayerOption(IJKFFOptionCategory category)
     } else {
         NSString *message = [NSString stringWithFormat:@"actual: %s\n expect: %s\n", actualVersion, expectVersion];
         NSLog(@"\n!!!!!!!!!!\n%@\n!!!!!!!!!!\n", message);
+        
+#if TARGET_OS_IOS
         if (showAlert) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Unexpected FFmpeg version"
                                                                 message:message
@@ -389,6 +391,7 @@ inline static int getPlayerOption(IJKFFOptionCategory category)
                                                       otherButtonTitles:nil];
             [alertView show];
         }
+#endif
         return NO;
     }
 }
@@ -402,6 +405,7 @@ inline static int getPlayerOption(IJKFFOptionCategory category)
     if (actualVersion == AV_VERSION_INT(major, minor, micro)) {
         return YES;
     } else {
+#if TARGET_OS_IOS
         if (showAlert) {
             NSString *message = [NSString stringWithFormat:@"actual: %s\n expect: %d.%d.%d\n",
                                  ijkmp_version_ident(), major, minor, micro];
@@ -412,6 +416,7 @@ inline static int getPlayerOption(IJKFFOptionCategory category)
                                                       otherButtonTitles:nil];
             [alertView show];
         }
+#endif
         return NO;
     }
 }
@@ -444,32 +449,32 @@ inline static int getPlayerOption(IJKFFOptionCategory category)
     ijkmp_dec_ref_p(&_mediaPlayer);
 }
 
-- (MPMoviePlaybackState)playbackState
+- (IJKMoviePlaybackState)playbackState
 {
     if (!_mediaPlayer)
         return NO;
 
-    MPMoviePlaybackState mpState = MPMoviePlaybackStateStopped;
+    IJKMoviePlaybackState mpState = IJKMoviePlaybackStateStopped;
     int state = ijkmp_get_state(_mediaPlayer);
     switch (state) {
         case MP_STATE_STOPPED:
         case MP_STATE_COMPLETED:
         case MP_STATE_ERROR:
         case MP_STATE_END:
-            mpState = MPMoviePlaybackStateStopped;
+            mpState = IJKMoviePlaybackStateStopped;
             break;
         case MP_STATE_IDLE:
         case MP_STATE_INITIALIZED:
         case MP_STATE_ASYNC_PREPARING:
         case MP_STATE_PAUSED:
-            mpState = MPMoviePlaybackStatePaused;
+            mpState = IJKMoviePlaybackStatePaused;
             break;
         case MP_STATE_PREPARED:
         case MP_STATE_STARTED: {
             if (_seeking)
-                mpState = MPMoviePlaybackStateSeekingForward;
+                mpState = IJKMoviePlaybackStateSeekingForward;
             else
-                mpState = MPMoviePlaybackStatePlaying;
+                mpState = IJKMoviePlaybackStatePlaying;
             break;
         }
     }
@@ -544,20 +549,20 @@ inline static int getPlayerOption(IJKFFOptionCategory category)
     [self didChangeValueForKey:@"naturalSize"];
 }
 
-- (void)setScalingMode: (MPMovieScalingMode) aScalingMode
+- (void)setScalingMode: (IJKMovieScalingMode) aScalingMode
 {
-    MPMovieScalingMode newScalingMode = aScalingMode;
+    IJKMovieScalingMode newScalingMode = aScalingMode;
     switch (aScalingMode) {
-        case MPMovieScalingModeNone:
+        case IJKMovieScalingModeNone:
             [_view setContentMode:UIViewContentModeCenter];
             break;
-        case MPMovieScalingModeAspectFit:
+        case IJKMovieScalingModeAspectFit:
             [_view setContentMode:UIViewContentModeScaleAspectFit];
             break;
-        case MPMovieScalingModeAspectFill:
+        case IJKMovieScalingModeAspectFill:
             [_view setContentMode:UIViewContentModeScaleAspectFill];
             break;
-        case MPMovieScalingModeFill:
+        case IJKMovieScalingModeFill:
             [_view setContentMode:UIViewContentModeScaleToFill];
             break;
         default:
@@ -567,11 +572,13 @@ inline static int getPlayerOption(IJKFFOptionCategory category)
     _scalingMode = newScalingMode;
 }
 
+#if TARGET_OS_IOS
 // deprecated, for MPMoviePlayerController compatiable
 - (UIImage *)thumbnailImageAtTime:(NSTimeInterval)playbackTime timeOption:(MPMovieTimeOption)option
 {
     return nil;
 }
+#endif
 
 - (UIImage *)thumbnailImageAtCurrentTime
 {
@@ -642,7 +649,7 @@ inline static void fillMetaInternal(NSMutableDictionary *meta, IjkMediaMeta *raw
                 postNotificationName:IJKMoviePlayerPlaybackDidFinishNotification
                 object:self
                 userInfo:@{
-                    MPMoviePlayerPlaybackDidFinishReasonUserInfoKey: @(MPMovieFinishReasonPlaybackError),
+                    MPMoviePlayerPlaybackDidFinishReasonUserInfoKey: @(IJKMovieFinishReasonPlaybackError),
                     @"error": @(avmsg->arg1)}];
             break;
         }
@@ -728,7 +735,7 @@ inline static void fillMetaInternal(NSMutableDictionary *meta, IjkMediaMeta *raw
 
             [[NSNotificationCenter defaultCenter] postNotificationName:IJKMediaPlaybackIsPreparedToPlayDidChangeNotification object:self];
 
-            _loadState = MPMovieLoadStatePlayable | MPMovieLoadStatePlaythroughOK;
+            _loadState = IJKMovieLoadStatePlayable | IJKMovieLoadStatePlaythroughOK;
 
             [[NSNotificationCenter defaultCenter]
              postNotificationName:IJKMoviePlayerLoadStateDidChangeNotification
@@ -747,7 +754,7 @@ inline static void fillMetaInternal(NSMutableDictionary *meta, IjkMediaMeta *raw
             [[NSNotificationCenter defaultCenter]
              postNotificationName:IJKMoviePlayerPlaybackDidFinishNotification
              object:self
-             userInfo:@{MPMoviePlayerPlaybackDidFinishReasonUserInfoKey: @(MPMovieFinishReasonPlaybackEnded)}];
+             userInfo:@{MPMoviePlayerPlaybackDidFinishReasonUserInfoKey: @(IJKMovieFinishReasonPlaybackEnded)}];
             break;
         }
         case FFP_MSG_VIDEO_SIZE_CHANGED:
@@ -769,7 +776,7 @@ inline static void fillMetaInternal(NSMutableDictionary *meta, IjkMediaMeta *raw
         case FFP_MSG_BUFFERING_START: {
             NSLog(@"FFP_MSG_BUFFERING_START:\n");
 
-            _loadState = MPMovieLoadStateStalled;
+            _loadState = IJKMovieLoadStateStalled;
 
             [[NSNotificationCenter defaultCenter]
              postNotificationName:IJKMoviePlayerLoadStateDidChangeNotification
@@ -779,7 +786,7 @@ inline static void fillMetaInternal(NSMutableDictionary *meta, IjkMediaMeta *raw
         case FFP_MSG_BUFFERING_END: {
             NSLog(@"FFP_MSG_BUFFERING_END:\n");
 
-            _loadState = MPMovieLoadStatePlayable | MPMovieLoadStatePlaythroughOK;
+            _loadState = IJKMovieLoadStatePlayable | IJKMovieLoadStatePlaythroughOK;
 
             [[NSNotificationCenter defaultCenter]
              postNotificationName:IJKMoviePlayerLoadStateDidChangeNotification
@@ -1168,8 +1175,8 @@ static int ijkff_inject_callback(void *opaque, int message, void *data, size_t d
         case AVAudioSessionInterruptionTypeBegan: {
             NSLog(@"IJKFFMoviePlayerController:audioSessionInterrupt: begin\n");
             switch (self.playbackState) {
-                case MPMoviePlaybackStatePaused:
-                case MPMoviePlaybackStateStopped:
+                case IJKMoviePlaybackStatePaused:
+                case IJKMoviePlaybackStateStopped:
                     _playingBeforeInterruption = NO;
                     break;
                 default:

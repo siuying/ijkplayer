@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
+#if TARGET_OS_IOS
 #import "IJKMediaPlayback.h"
 
 @interface IJKMPMoviePlayerController : MPMoviePlayerController <IJKMediaPlayback>
@@ -28,3 +29,4 @@
 - (id)initWithContentURLString:(NSString *)aUrl;
 
 @end
+#endif

@@ -19,7 +19,7 @@
  * License along with ijkPlayer; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-
+#if TARGET_OS_IOS
 #ifndef FFPLAY__FF_FFPIPENODE_IOS_VIDEOTOOLBOX_DEC_H
 #define FFPLAY__FF_FFPIPENODE_IOS_VIDEOTOOLBOX_DEC_H
 
@@ -29,4 +29,5 @@ struct FFPlayer;
 
 IJKFF_Pipenode *ffpipenode_create_video_decoder_from_ios_videotoolbox(struct FFPlayer *ffp);
 
+#endif
 #endif

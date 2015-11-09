@@ -20,7 +20,7 @@
  * License along with ijkPlayer; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-
+#if TARGET_OS_IOS
 #ifndef IJKMediaPlayer_videotoolbox_core_h
 #define IJKMediaPlayer_videotoolbox_core_h
 
@@ -95,4 +95,5 @@ int videotoolbox_decode_video(VideoToolBoxContext* context, AVCodecContext *avct
 
 void dealloc_videotoolbox(VideoToolBoxContext* context);
 
+#endif
 #endif

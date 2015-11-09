@@ -19,7 +19,7 @@
  * License along with ijkPlayer; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-
+#if TARGET_OS_IOS
 #include "ffpipenode_ios_videotoolbox_vdec.h"
 #include "IJKVideoToolBox.h"
 #include "ijksdl_vout_overlay_videotoolbox.h"
@@ -190,3 +190,4 @@ fail:
     ffpipenode_free_p(&node);
     return NULL;
 }
+#endif

@@ -168,8 +168,8 @@ static IJKAVMoviePlayerController* instance;
 {
     self = [super init];
     if (self != nil) {
-        self.controlStyle = MPMovieControlStyleNone;
-        self.scalingMode = MPMovieScalingModeAspectFit;
+        self.controlStyle = IJKMovieControlStyleNone;
+        self.scalingMode = IJKMovieScalingModeAspectFit;
         self.shouldAutoplay = NO;
 
         _playUrl = aUrl;
@@ -376,57 +376,57 @@ static IJKAVMoviePlayerController* instance;
     
     NSArray *events = playerItem.accessLog.events;
     if (events != nil && events.count > 0) {
-        MPMovieAccessLogEvent *currentEvent = [events objectAtIndex:events.count -1];
+        AVPlayerItemAccessLogEvent *currentEvent = [events objectAtIndex:events.count -1];
         return currentEvent.numberOfBytesTransferred;
     }
     return 0;
 }
 
-- (MPMoviePlaybackState)playbackState
+- (IJKMoviePlaybackState)playbackState
 {
     if (!_player)
-        return MPMoviePlaybackStateStopped;
+        return IJKMoviePlaybackStateStopped;
     
-    MPMoviePlaybackState mpState = MPMoviePlaybackStateStopped;
+    IJKMoviePlaybackState mpState = IJKMoviePlaybackStateStopped;
     if (_isCompleted) {
-        mpState = MPMoviePlaybackStateStopped;
+        mpState = IJKMoviePlaybackStateStopped;
     } else if (_isSeeking) {
-        mpState = MPMoviePlaybackStateSeekingForward;
+        mpState = IJKMoviePlaybackStateSeekingForward;
     } else if ([self isPlaying]) {
-        mpState = MPMoviePlaybackStatePlaying;
+        mpState = IJKMoviePlaybackStatePlaying;
     } else {
-        mpState = MPMoviePlaybackStatePaused;
+        mpState = IJKMoviePlaybackStatePaused;
     }
     return mpState;
 }
 
-- (MPMovieLoadState)loadState
+- (IJKMovieLoadState)loadState
 {
     if (_player == nil)
-        return MPMovieLoadStateUnknown;
+        return IJKMovieLoadStateUnknown;
     
     if (_isSeeking)
-        return MPMovieLoadStateStalled;
+        return IJKMovieLoadStateStalled;
     
     AVPlayerItem *playerItem = [_player currentItem];
     if (playerItem == nil)
-        return MPMovieLoadStateUnknown;
+        return IJKMovieLoadStateUnknown;
     
     if (_player != nil && !isFloatZero(_player.rate)) {
         // NSLog(@"loadState: playing");
-        return MPMovieLoadStatePlayable | MPMovieLoadStatePlaythroughOK;
+        return IJKMovieLoadStatePlayable | IJKMovieLoadStatePlaythroughOK;
     } else if ([playerItem isPlaybackBufferFull]) {
         // NSLog(@"loadState: isPlaybackBufferFull");
-        return MPMovieLoadStatePlayable | MPMovieLoadStatePlaythroughOK;
+        return IJKMovieLoadStatePlayable | IJKMovieLoadStatePlaythroughOK;
     } else if ([playerItem isPlaybackLikelyToKeepUp]) {
         // NSLog(@"loadState: isPlaybackLikelyToKeepUp");
-        return MPMovieLoadStatePlayable | MPMovieLoadStatePlaythroughOK;
+        return IJKMovieLoadStatePlayable | IJKMovieLoadStatePlaythroughOK;
     } else if ([playerItem isPlaybackBufferEmpty]) {
         // NSLog(@"loadState: isPlaybackBufferEmpty");
-        return MPMovieLoadStateStalled;
+        return IJKMovieLoadStateStalled;
     } else {
         NSLog(@"loadState: unknown");
-        return MPMovieLoadStateUnknown;
+        return IJKMovieLoadStateUnknown;
     }
 }
 
@@ -653,7 +653,7 @@ static IJKAVMoviePlayerController* instance;
          postNotificationName:IJKMoviePlayerPlaybackDidFinishNotification
          object:self
          userInfo:@{
-                    MPMoviePlayerPlaybackDidFinishReasonUserInfoKey: @(MPMovieFinishReasonPlaybackError),
+                    MPMoviePlayerPlaybackDidFinishReasonUserInfoKey: @(IJKMovieFinishReasonPlaybackError),
                     @"error": blockError
                     }];
     });
@@ -690,7 +690,7 @@ static IJKAVMoviePlayerController* instance;
          postNotificationName:IJKMoviePlayerPlaybackDidFinishNotification
          object:self
          userInfo:@{
-                    MPMoviePlayerPlaybackDidFinishReasonUserInfoKey: @(MPMovieFinishReasonPlaybackEnded)
+                    MPMoviePlayerPlaybackDidFinishReasonUserInfoKey: @(IJKMovieFinishReasonPlaybackEnded)
                     }];
     });
 }
@@ -945,20 +945,20 @@ static IJKAVMoviePlayerController* instance;
     return [videoTracks objectAtIndex:0].naturalSize;
 }
 
-- (void)setScalingMode: (MPMovieScalingMode) aScalingMode
+- (void)setScalingMode: (IJKMovieScalingMode) aScalingMode
 {
-    MPMovieScalingMode newScalingMode = aScalingMode;
+    IJKMovieScalingMode newScalingMode = aScalingMode;
     switch (aScalingMode) {
-        case MPMovieScalingModeNone:
+        case IJKMovieScalingModeNone:
             [_view setContentMode:UIViewContentModeCenter];
             break;
-        case MPMovieScalingModeAspectFit:
+        case IJKMovieScalingModeAspectFit:
             [_view setContentMode:UIViewContentModeScaleAspectFit];
             break;
-        case MPMovieScalingModeAspectFill:
+        case IJKMovieScalingModeAspectFill:
             [_view setContentMode:UIViewContentModeScaleAspectFill];
             break;
-        case MPMovieScalingModeFill:
+        case IJKMovieScalingModeFill:
             [_view setContentMode:UIViewContentModeScaleToFill];
             break;
         default:
@@ -991,8 +991,8 @@ static IJKAVMoviePlayerController* instance;
         case AVAudioSessionInterruptionTypeBegan: {
             NSLog(@"IJKAVMoviePlayerController:audioSessionInterrupt: begin\n");
             switch (self.playbackState) {
-                case MPMoviePlaybackStatePaused:
-                case MPMoviePlaybackStateStopped:
+                case IJKMoviePlaybackStatePaused:
+                case IJKMoviePlaybackStateStopped:
                     _playingBeforeInterruption = NO;
                     break;
                 default:

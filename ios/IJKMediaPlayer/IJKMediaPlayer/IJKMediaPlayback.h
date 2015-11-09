@@ -27,6 +27,41 @@
 
 @protocol IJKMediaPlayback;
 
+typedef NS_ENUM(NSInteger, IJKMoviePlaybackState) {
+    IJKMoviePlaybackStateStopped,
+    IJKMoviePlaybackStatePlaying,
+    IJKMoviePlaybackStatePaused,
+    IJKMoviePlaybackStateInterrupted,
+    IJKMoviePlaybackStateSeekingForward,
+    IJKMoviePlaybackStateSeekingBackward
+};
+
+typedef NS_OPTIONS(NSUInteger, IJKMovieLoadState) {
+    IJKMovieLoadStateUnknown        = 0,
+    IJKMovieLoadStatePlayable       = 1 << 0,
+    IJKMovieLoadStatePlaythroughOK  = 1 << 1, // Playback will be automatically started in this state when shouldAutoplay is YES
+    IJKMovieLoadStateStalled        = 1 << 2, // Playback will be automatically paused in this state, if started
+};
+
+typedef NS_ENUM(NSInteger, IJKMovieControlStyle) {
+    IJKMovieControlStyleNone,       // No controls
+    IJKMovieControlStyleEmbedded,   // Controls for an embedded view
+    IJKMovieControlStyleFullscreen, // Controls for fullscreen playback
+    IJKMovieControlStyleDefault = IJKMovieControlStyleEmbedded
+};
+
+typedef NS_ENUM(NSInteger, IJKMovieScalingMode) {
+    IJKMovieScalingModeNone,       // No scaling
+    IJKMovieScalingModeAspectFit,  // Uniform scale until one dimension fits
+    IJKMovieScalingModeAspectFill, // Uniform scale until the movie fills the visible bounds. One dimension may have clipped contents
+    IJKMovieScalingModeFill        // Non-uniform scale. Both render dimensions will exactly match the visible bounds
+};
+
+typedef NS_ENUM(NSInteger, IJKMovieFinishReason) {
+    IJKMovieFinishReasonPlaybackEnded,
+    IJKMovieFinishReasonPlaybackError,
+    IJKMovieFinishReasonUserExited
+};
 
 #pragma mark IJKMediaPlayback
 
@@ -47,14 +82,14 @@
 @property(nonatomic, readonly)  NSInteger bufferingProgress;
 
 @property(nonatomic, readonly)  BOOL isPreparedToPlay;
-@property(nonatomic, readonly)  MPMoviePlaybackState playbackState;
-@property(nonatomic, readonly)  MPMovieLoadState loadState;
+@property(nonatomic, readonly)  IJKMoviePlaybackState playbackState;
+@property(nonatomic, readonly)  IJKMovieLoadState loadState;
 
 @property(nonatomic, readonly) int64_t numberOfBytesTransferred;
 
-@property(nonatomic) MPMovieControlStyle controlStyle;
+@property(nonatomic) IJKMovieControlStyle controlStyle;
 @property(nonatomic, readonly) CGSize naturalSize;
-@property(nonatomic) MPMovieScalingMode scalingMode;
+@property(nonatomic) IJKMovieScalingMode scalingMode;
 @property(nonatomic) BOOL shouldAutoplay;
 
 @property (nonatomic) BOOL allowsMediaAirPlay;

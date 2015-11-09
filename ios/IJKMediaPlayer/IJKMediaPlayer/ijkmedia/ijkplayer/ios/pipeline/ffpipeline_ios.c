@@ -39,9 +39,11 @@ static IJKFF_Pipenode *func_open_video_decoder(IJKFF_Pipeline *pipeline, FFPlaye
 {
     IJKFF_Pipenode* node = NULL;
     IJKFF_Pipeline_Opaque *opaque = pipeline->opaque;
+#if TARGET_OS_IOS
     if (ffp->videotoolbox) {
         node = ffpipenode_create_video_decoder_from_ios_videotoolbox(ffp);
     }
+#endif
     if (node == NULL) {
         ALOGE("vtb fail!!! switch to ffmpeg decode!!!! \n");
         node = ffpipenode_create_video_decoder_from_ffplay(ffp);
