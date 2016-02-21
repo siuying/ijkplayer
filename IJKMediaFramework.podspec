@@ -5,7 +5,7 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/siuying/ijkplayer"
   s.license      = { :type => "LGPL", :file => "COPYING.LGPLv3" }
 
-  s.author             = { "Zhang Rui" => "bbcallen@gmail.com" }
+  s.author       = { "Zhang Rui" => "bbcallen@gmail.com" }
 
   s.platform     = :ios
   s.platform     = :ios, "8.0"
