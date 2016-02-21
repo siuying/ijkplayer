@@ -12,14 +12,33 @@ Pod::Spec.new do |s|
 
   s.source       = { :git => "https://github.com/siuying/ijkplayer.git", :tag => "s0.4.2.4" }
 
-  s.source_files  = "ios/IJKMediaPlayer/**/*.{h,m}"
+  s.source_files  = "ios/IJKMediaPlayer/**/*.{h,m}",
+    "ijkmedia/ijkplayer/*.{h,c}",
+    "ijkmedia/ijkplayer/pipeline/*.{h,c}",
+    "ijkmedia/ijkplayer/ijkavutil/*.{h,c}",
+    "ijkmedia/ijkplayer/ijkavformat/*.{h,c}",
+    "ios/IJKMediaPlayer/IJKMediaPlayer/ijkmedia/**/*.{h,c}",
+    "ijkmedia/ijksdl/*.{h,c}",
+    "ijkmedia/ijksdl/ffmpeg/*.{h,c}",
+    "ijkmedia/ijksdl/dummy/*.{h,c}",
+    "ijkmedia/ijksdl/gles/*.{h,c}"
+
   s.public_header_files = "ios/IJKMediaPlayer/IJKMediaPlayer/IJKMediaPlayback.h",
     "ios/IJKMediaPlayer/IJKMediaPlayer/IJKMPMoviePlayerController.h",
     "ios/IJKMediaPlayer/IJKMediaPlayer/IJKFFOptions.h",
     "ios/IJKMediaPlayer/IJKMediaPlayer/IJKFFMoviePlayerController.h",
     "ios/IJKMediaPlayer/IJKMediaPlayer/IJKAVMoviePlayerController.h",
     "ios/IJKMediaPlayer/IJKMediaPlayer/IJKMediaModule.h",
-    "ios/IJKMediaPlayer/IJKMediaPlayer/IJKMediaPlayer.h"
+    "ios/IJKMediaPlayer/IJKMediaPlayer/IJKMediaPlayer.h",
+    "ijkmedia/ijkplayer/*.h",
+    "ijkmedia/ijkplayer/pipeline/*.h",
+    "ijkmedia/ijkplayer/ijkavutil/*.h",
+    "ijkmedia/ijkplayer/ijkavformat/*.h",
+    "ios/IJKMediaPlayer/IJKMediaPlayer/ijkmedia/**/*.h",
+    "ijkmedia/ijksdl/*.h",
+    "ijkmedia/ijksdl/ffmpeg/*.h",
+    "ijkmedia/ijksdl/dummy/*.h",
+    "ijkmedia/ijksdl/gles/*.h"
 
   s.requires_arc = true
   s.prepare_command = 'sh download-ios.sh'
