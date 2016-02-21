@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/siuying/ijkplayer.git", :tag => "s0.4.2.4" }
 
   s.source_files  = "ios/IJKMediaPlayer/**/*.{h,m}"
-  s.public_header_files = "ios/IJKMediaPlayer/IJKMediaPlayer/IJKMediaPlayback.h", 
+  s.public_header_files = "ios/IJKMediaPlayer/IJKMediaPlayer/IJKMediaPlayback.h",
     "ios/IJKMediaPlayer/IJKMediaPlayer/IJKMPMoviePlayerController.h",
     "ios/IJKMediaPlayer/IJKMediaPlayer/IJKFFOptions.h",
     "ios/IJKMediaPlayer/IJKMediaPlayer/IJKFFMoviePlayerController.h",
@@ -22,13 +22,13 @@ Pod::Spec.new do |s|
     "ios/IJKMediaPlayer/IJKMediaPlayer/IJKMediaPlayer.h"
 
   s.requires_arc = true
-  s.prepare_command = 'download-ios.sh'
-  s.vendored_libraries = 'vendor/ffmpeg-ios-static-libs/lib/libavcodec.a', 
-    'vendor/ffmpeg-ios-static-libs/lib/libavdevice.a', 
-    'vendor/ffmpeg-ios-static-libs/lib/libavfilter.a', 
+  s.prepare_command = 'sh download-ios.sh'
+  s.vendored_libraries = 'vendor/ffmpeg-ios-static-libs/lib/libavcodec.a',
+    'vendor/ffmpeg-ios-static-libs/lib/libavdevice.a',
+    'vendor/ffmpeg-ios-static-libs/lib/libavfilter.a',
     'vendor/ffmpeg-ios-static-libs/lib/libavformat.a',
-    'vendor/ffmpeg-ios-static-libs/lib/libavutil.a', 
-    'vendor/ffmpeg-ios-static-libs/lib/libswresample.a', 
+    'vendor/ffmpeg-ios-static-libs/lib/libavutil.a',
+    'vendor/ffmpeg-ios-static-libs/lib/libswresample.a',
     'vendor/ffmpeg-ios-static-libs/lib/libswscale.a'
   s.preserve_paths = "vendor/ffmpeg-ios-static-libs/lib/*.a"
   s.library = [
