@@ -6,3 +6,4 @@ UNZIP_DIR="ffmpeg-ios-static-libs-${VERSION}"
 mkdir vendor
 cd vendor
 wget $URL -O $DOWNLOADED_FILE && tar vxfz $DOWNLOADED_FILE
+mv build ../
